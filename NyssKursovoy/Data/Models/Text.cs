@@ -34,7 +34,15 @@ namespace NyssKursovoy.Data.Models
             foreach (var ir in p) { k.Enqueue(char.ToLower(ir)); }
             return k;
         }
-
+        public static bool CheakKey()
+        {
+            bool a = true;
+            foreach (var ir in Key)
+            {
+                if (!letters.ContainsKey(char.ToLower(ir))) { a = false; break; }
+            }
+            return a;
+        }
         public static string Decrypt()//дешифрование
         {
             bool isUpper = false;

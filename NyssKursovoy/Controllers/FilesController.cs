@@ -66,7 +66,7 @@ namespace NyssKursovoy.Controllers
             }
             if (action == "Преобразовать")
             {
-                if (string.IsNullOrWhiteSpace(Text.Key)) Text.OutFile = Text.InFile;
+                if (string.IsNullOrWhiteSpace(Text.Key)||!Text.CheakKey()) Text.OutFile = Text.InFile;
                 else if (string.IsNullOrWhiteSpace(Text.InFile)) Text.OutFile="";
                 else if (whereShifr == "Шифровать") Text.OutFile = Text.Encrypt();
                 else if (whereShifr == "Дешифровать") Text.OutFile = Text.Decrypt();
