@@ -1,0 +1,49 @@
+﻿@using NyssKursovoy.Data.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+</head>
+<body>
+    <div>
+    <form name="table" method="POST" id="rezero" action="~/Files/List" enctype="multipart/form-data">
+        <h3>Выберите файл, с которым хотите работать и нажмите кнопку загрузки</h3>
+        <h3><input type="file" name="shifrFile"> <input type="submit" name="action" value="Загрузить файл"></h3>
+        <h3>Исходный текст</h3>
+        <textarea type="text" name="Content" class="text">@Text.InFile</textarea>
+        <h3>Ключ</h3>
+        <h3>
+            @Html.TextBox("key", Text.Key)
+            <select name="whereShifr">
+                <option>Шифровать</option>
+                <option>Дешифровать</option>
+            </select>
+            <input type="submit" name="action" value="Преобразовать">
+        </h3>
+        <h3>Итоговый текст</h3>
+        <textarea type="text" class="text" disabled>@Text.OutFile</textarea>
+        <style>
+            textarea.text {
+                width: 1000px;
+                height: 150px;
+
+                border: 1px solid #999;
+                font-family: Tahoma;
+                border: 3px solid #245488;
+                word-wrap: break-word;
+
+            }
+        </style>
+        <h3><input type="submit" name="action" value="Сохранить в файл"></h3>
+    </form>
+</div>
+
+</body>
+</html>
+
