@@ -23,7 +23,6 @@ namespace NyssKursovoy.Controllers
 
         public IActionResult List()
         {
-            
             return View();
         }
 
@@ -34,6 +33,7 @@ namespace NyssKursovoy.Controllers
             Text.InFile = Content;
             if(action == "Загрузить файл") 
             {
+                Text.InFile = "";
                 if (shifrFile != null && shifrFile.Length > 0)
                 {
                     if (shifrFile.FileName.Substring(shifrFile.FileName.Length - 4) == "docx")
@@ -66,19 +66,27 @@ namespace NyssKursovoy.Controllers
             }
             if (action == "Преобразовать")
             {
-                if (whereShifr == "Шифровать") Text.OutFile = Text.Encrypt();
-                if (whereShifr == "Дешифровать") Text.OutFile = Text.Decrypt();
-            }
-            if (action == "Сохранить в файл")
-            {
-
+                if (string.IsNullOrWhiteSpace(Text.Key)) Text.OutFile = Text.InFile;
+                else if (string.IsNullOrWhiteSpace(Text.InFile)) Text.OutFile="";
+                else if (whereShifr == "Шифровать") Text.OutFile = Text.Encrypt();
+                else if (whereShifr == "Дешифровать") Text.OutFile = Text.Decrypt();
                 string fullpath = Path.Combine(_env.WebRootPath, "Files/output.txt");
                 using (var fileStream = new StreamWriter(fullpath, false))
                 {
                     fileStream.Write(Text.OutFile);
                     fileStream.Close();
-
                 }
+                fullpath = Path.Combine(_env.WebRootPath, "Files/output.docx");
+                using (var fileStream = new StreamWriter(fullpath, false))
+                {
+                    fileStream.Write(Text.OutFile);
+                    fileStream.Close();
+                }
+            }
+            if (action == "docx Файл")
+            {
+                return RedirectToAction("output.docx");
+
             }
 
             return RedirectToAction("List");

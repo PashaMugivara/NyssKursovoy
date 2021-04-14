@@ -16,13 +16,14 @@ namespace NyssKursovoy.Data.Models
             {'а',1 }, {'б',2 },  {'в',3 }, {'г',4 }, {'д',5 }, {'е',6 }, {'ё',7 }, {'ж',8 }, {'з',9 }, {'и',10 },
             {'й',11 }, {'к',12 },  {'л',13 }, {'м',14 }, {'н',15 }, {'о',16 }, {'п',17 }, {'р',18 }, {'с',19 }, {'т',20 },
             {'у',21 }, {'ф',22 },  {'х',23 }, {'ц',24 }, {'ч',25 }, {'ш',26 }, {'щ',27 }, {'ъ',28 }, {'ы',29 }, {'ь',30 },
-            {'э',31 }, {'ю',32 },  {'я',33 }//зато не надо мучиться с ё
+            {'э',31 }, {'ю',32 },  {'я',33 }//зато не надо мучиться с "ё"
         };
         public static string OutFile { get; set; } = "";
         public static string InFile { get; set; } = "";
         public static string Key { get; set; } = "Скорпион";
-        private static Queue<char> GetRepeatKey(string s, int n)
+        private static Queue<char> GetRepeatKey(string s, int n)//очередь из символов ключа
         {
+
             Queue<char> k = new Queue<char>() { };
             var p = s;
             while (p.Length < n)
@@ -34,7 +35,7 @@ namespace NyssKursovoy.Data.Models
             return k;
         }
 
-        public static string Decrypt()
+        public static string Decrypt()//дешифрование
         {
             bool isUpper = false;
             string c = InFile;
@@ -59,7 +60,7 @@ namespace NyssKursovoy.Data.Models
             }
             return p;
         }
-        public static string Encrypt()
+        public static string Encrypt()//шифрование
         {
             bool isUpper = false;
             string p = InFile;
@@ -84,23 +85,18 @@ namespace NyssKursovoy.Data.Models
             }
             return c;
         }
-        public static string TextFromWord(string file)
+        public static string TextFromWord(string file)//чтение файла формата docx
         {
             const string wordmlNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 
             StringBuilder textBuilder = new StringBuilder();
             using (WordprocessingDocument wdDoc = WordprocessingDocument.Open(file, false))
-            {
-                // Manage namespaces to perform XPath queries.  
+            { 
                 NameTable nt = new NameTable();
                 XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
                 nsManager.AddNamespace("w", wordmlNamespace);
-
-                // Get the document part from the package.  
-                // Load the XML in the document part into an XmlDocument instance.  
                 XmlDocument xdoc = new XmlDocument(nt);
                 xdoc.Load(wdDoc.MainDocumentPart.GetStream());
-
                 XmlNodeList paragraphNodes = xdoc.SelectNodes("//w:p", nsManager);
                 foreach (XmlNode paragraphNode in paragraphNodes)
                 {
@@ -111,7 +107,6 @@ namespace NyssKursovoy.Data.Models
                     }
                     textBuilder.Append(Environment.NewLine);
                 }
-
             }
             return textBuilder.ToString();
         }
